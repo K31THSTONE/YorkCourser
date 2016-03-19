@@ -35,7 +35,7 @@ public class SscheduleEdit extends HttpServlet {
         errorMessage = "Please specify an actual student id";
       } else {
         SscheduleViewControl controller = new SscheduleViewControl();
-        user = controller.fetchUser(User);
+        //user = controller.fetchUser(User);
       }
     } catch (NumberFormatException e) {
       errorMessage = "Invalid Student ID";

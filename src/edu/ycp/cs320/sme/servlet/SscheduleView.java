@@ -1,6 +1,5 @@
 package edu.ycp.cs320.sme.servlet;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -26,20 +25,20 @@ public class SscheduleView extends HttpServlet {
 
     // Decode form parameters and dispatch to controller
     String errorMessage = null;
-    User user = null;
+    User user = new User();
+    
     
     try {
-      int User = getIntFromParameter(req.getParameter("student_id"));
+      int User = getIntFromParameter(req.getParameter("user_id"));
 
       if (User <0) {
-        errorMessage = "Please specify an actual student id";
+        errorMessage = "Please specify an actual user id";
       } else {
-        SscheduleViewControl controller = new SscheduleViewControl(new File("./war/Student_test.csv"));
-        user = controller.fetchUser(User);
+        SscheduleViewControl controller = new SscheduleViewControl();
       }
     } catch (NumberFormatException e) {
       errorMessage = "Invalid Student ID";
-    }
+    } 
 
     // Add parameters as request attributes
     req.setAttribute("student_id", req.getParameter("student_id"));
