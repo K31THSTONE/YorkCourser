@@ -87,6 +87,5 @@ public class DatabaseTests {
 		assertEquals(false, t == null);
 		t = db.fetchTeacher("xxxx");
 		assertEquals(null, t);
-		
 	}
 }
