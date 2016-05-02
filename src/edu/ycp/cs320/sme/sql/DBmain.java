@@ -437,7 +437,7 @@ public class DBmain implements IDatabase{
 							days +=  (stockDays.contains("R")? " Thurs. ":"");
 							days +=  (stockDays.contains("F")? " Fri. ":"");
 						}
-						c.setDays(days.toCharArray());
+						c.setDays(days);
 						
 						//string value of start and finish time
 						time  = tokens[7];

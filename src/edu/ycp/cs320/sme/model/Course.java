@@ -33,6 +33,7 @@ public class Course implements Serializable{
 	private List<Student> pendingOverride = new LinkedList<Student>();
 	
 	public Course(){
+		
 	}
 	
 	public enum Subject {
@@ -84,7 +85,7 @@ public class Course implements Serializable{
 	public String getTitle() {
 		return title;
 	}
-	public char[] getDays() {
+	public String getDays() {
 		return days;
 	}
 	public String getType () {
@@ -113,12 +114,12 @@ public class Course implements Serializable{
 	public void setStudentOverride(List<Student> sAllowedOverride) {
 		this.sAllowedOverride = sAllowedOverride;
 	}
-	public void setDays(char[] days) {
+	public void setDays(String days) {
 		this.days = days;
 	}
-	public void setDay(String day,int idx) {
+	public void setDay(String day) {
 		if(day != null && !day.equals("")){
-			days[idx] = day.charAt(0);
+			this.days += day;
 		}
 	}
 	public void setAdr(int adr){

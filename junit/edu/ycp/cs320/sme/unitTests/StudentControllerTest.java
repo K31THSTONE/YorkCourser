@@ -18,7 +18,7 @@ public class StudentControllerTest {
 	public void buildStudentTest(){
 		Student student;
 		StudentController controller = new StudentController();
-		student = controller.buildStudent();
+		student = controller.getGenericStudent();
 		
 		assertEquals(true,new File("./war/Student_test.csv").exists());
 		assertEquals(4,student.getSelectedSchedule().getCourseList().size());
@@ -28,10 +28,8 @@ public class StudentControllerTest {
 		assertEquals(Subject.CHM,c.getSubject() );
 		assertEquals("444.101",c.getCourseNum());
 		assertEquals(true,"Inorganic Chem".equals(c.getTitle()));
-		char[] days = c.getDays();
-		assertEquals(days[1],'T');
-		assertEquals(days[2], '\0');
-		assertEquals(days[6], '\0');
+		String days = c.getDays();
+		assertEquals(true,days == "T");
 	}
 	@Test
 	public void changeScheduleTest(){

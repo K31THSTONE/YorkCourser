@@ -3,7 +3,6 @@ package edu.ycp.cs320.sme.unitTests;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -37,10 +36,8 @@ public class DatabaseTests {
 		assertEquals(Subject.FYS,c.getSubject() );
 		assertEquals("100.115",c.getCourseNum());
 		assertEquals(true,"RACE JUSTICE AMERICA".equals(c.getTitle()));
-		char[] days = c.getDays();
-		assertEquals(days[0],'M');
-		assertEquals(days[2], 'W');
-		assertEquals(days[6], '\0');
+		String days = c.getDays();
+		assertEquals(true, days == "MW");
 		
 		course = db.queryCourses(3, null, "work");
 		//should contain only one course
@@ -62,10 +59,8 @@ public class DatabaseTests {
 		assertEquals(Subject.FIN,c.getSubject());
 		assertEquals("310.801",c.getCourseNum());
 		assertEquals(true,"Real Estate Finance".equals(c.getTitle()));
-		char[] days = c.getDays();
-		assertEquals(days[0],'\0');
-		assertEquals(days[1], 'T');
-		assertEquals(days[4], '\0');
+		String days = c.getDays();
+		assertEquals(true, days.charAt(0) == 'T');
 		assertEquals(true,"Gregory, T".equals(c.getInstructor().getName()));
 	
 		//get a course not found in DB
@@ -77,8 +72,14 @@ public class DatabaseTests {
 	@Test
 	public void testFetchTeacher(){
 		IDatabase db = DatabaseProvider.getInstance();
-		//get a real course - 10462,FIN,310.801,Real Estate Finance,3,LEC,T,06:30PM- 09:15PM,225,WBC 225,Gregory T,25,8
-		Student s = db.fetchStudent("GREGORY", "OLIFF", "goliff@ycp.edu");
+		Teacher t = null;
+		t = db.fetchTeacher("Hake");
+		assertEquals("Hake, D",t.getName());
+		System.out.println(t.getName());
+		t = db.fetchTeacher("hake");
+		assertEquals(false, t == null);
+		t = db.fetchTeacher("xxxx");
+		assertEquals(null, t);
 	}
 	@Test
 	public void testFetchStudent(){
@@ -89,10 +90,8 @@ public class DatabaseTests {
 		assertEquals(Subject.FIN,c.getSubject());
 		assertEquals("310.801",c.getCourseNum());
 		assertEquals(true,"Real Estate Finance".equals(c.getTitle()));
-		char[] days = c.getDays();
-		assertEquals(days[0],'\0');
-		assertEquals(days[1], 'T');
-		assertEquals(days[4], '\0');
+		String days = c.getDays();
+		assertEquals(true, days.charAt(0) == 'T');
 		assertEquals(true,"Gregory, T".equals(c.getInstructor().getName()));
 	
 		//get a course not found in DB
@@ -115,16 +114,8 @@ public class DatabaseTests {
 		s.setSelectedSchedule(schedule);
 		db.updateStudent(s);
 		Student retrieve = db.fetchStudent("Lebron", "James", "ljames@ycp.edu");
-		assertEquals(schedule.getCourseList(), retrieve.getSelectedSchedule().getCourseList());
-		assertEquals(retrieve.getName(), "Lebron James");
-		assertEquals(retrieve.getEmail(), "ljames@ycp.edu");
+		assertEquals(true, schedule.getCourseList().equals(retrieve.getSelectedSchedule().getCourseList()));
+		assertEquals(true, retrieve.getName().equals("Lebron James"));
+		assertEquals(true, retrieve.getEmail().equals("ljames@ycp.edu"));
 	}
 }
-
-
-
-
-
-
-
-

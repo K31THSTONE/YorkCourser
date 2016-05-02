@@ -41,8 +41,8 @@ public class TscheduleView extends HttpServlet {
 
 	  private void handleRequest(Teacher teacher, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		 List<Course> courses = null;
-		  if (teacher.getClassList() != null){
-			  courses = teacher.getClassList();
+		  if (teacher.getSelectedSchedule().getCourseList() != null){
+			  courses = teacher.getSelectedSchedule().getCourseList();
 		  }
 		    // Add result objects as request attributes
 		    req.setAttribute("name", teacher.getName());
