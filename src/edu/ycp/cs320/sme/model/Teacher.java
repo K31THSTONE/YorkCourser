@@ -1,10 +1,10 @@
 package edu.ycp.cs320.sme.model;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Teacher extends User{
 	//CRN's of the classes they teach
-	private ArrayList<Course> classList = new ArrayList<Course>();
+	private LinkedList<Course> classList = new LinkedList<Course>();
 	
 	public Teacher(){
 
@@ -13,13 +13,10 @@ public class Teacher extends User{
 	public void addClass(Course newClass){
 		this.classList.add(newClass);
 	}
-	public List<Course> getClassList(){
-		return classList;
-	}
 	
 	public void removeClass(int CRN){
 		int classIndex = -1;
-		ArrayList<Course> tempCourseList = this.classList;
+		LinkedList<Course> tempCourseList = this.classList;
 		//find index of class in class list
 		for(int i = 0; i < tempCourseList.size(); i++){
 			if(tempCourseList.get(i).getCRN() == CRN){
@@ -38,8 +35,11 @@ public class Teacher extends User{
 		return null;
 	}
 
-	public User getSelectedSchedule() {
-		// TODO Auto-generated method stub
-		return null;
+	public Schedule getSelectedSchedule() {
+		Schedule s = new Schedule();
+		s.setCourseList(this.classList);
+		s.setName("Fall 2016");
+		s.setSemester("Fall 2016");
+		return s;
 	}
 }

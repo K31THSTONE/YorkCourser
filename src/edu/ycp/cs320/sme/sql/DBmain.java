@@ -194,8 +194,7 @@ public class DBmain implements IDatabase{
 						"create table schedules ( "
 						+ "userID int constraint U_Id references users, "
 						+ "courseID int constraint C_Id references courses, "
-						+ "sch_num int, "
-						+ "name varchar(255) )");
+						+ "sch_num int )");
 				stmt1.executeUpdate();
 				return true;
 			}
@@ -438,7 +437,7 @@ public class DBmain implements IDatabase{
 							days +=  (stockDays.contains("R")? " Thurs. ":"");
 							days +=  (stockDays.contains("F")? " Fri. ":"");
 						}
-						c.setDays(days);
+						c.setDays(days.toCharArray());
 						
 						//string value of start and finish time
 						time  = tokens[7];

@@ -16,16 +16,13 @@ import edu.ycp.cs320.sme.model.Teacher;
 import edu.ycp.cs320.sme.sql.DBmain;
 import edu.ycp.cs320.sme.sql.DatabaseProvider;
 import edu.ycp.cs320.sme.sql.IDatabase;
-
+import edu.ycp.cs320.sme.model.*;
 public class DatabaseTests {
 
 	@BeforeClass
 	public static void buildup() throws IOException{
 		DBmain db = new DBmain();
-		db.main(null);
-	
 		DatabaseProvider.setInstance(db);
-		
 	}
 	
 	@Test
@@ -33,17 +30,17 @@ public class DatabaseTests {
 		
 		IDatabase db = DatabaseProvider.getInstance();
 		//Fall 2016,10015,FYS,100.115,RACE JUSTICE AMERICA,3,LEC,HUM 144,M,,W,,,,,"Levy, Peter"
-		List<Course> course = db.queryCourses(10015, null, null);
+		List<Course> course = db.queryCourses(10015, "FYS", "RACE JUSTICE AMERICA");
 		//should contain only one course
 		Course c = course.get(0);
 		
 		assertEquals(Subject.FYS,c.getSubject() );
 		assertEquals("100.115",c.getCourseNum());
 		assertEquals(true,"RACE JUSTICE AMERICA".equals(c.getTitle()));
-		String days = c.getDays();
-		assertEquals(true, days.contains("Mon"));
-		assertEquals(false, days.contains("Tues"));
-
+		char[] days = c.getDays();
+		assertEquals(days[0],'M');
+		assertEquals(days[2], 'W');
+		assertEquals(days[6], '\0');
 		
 		course = db.queryCourses(3, null, "work");
 		//should contain only one course
@@ -62,12 +59,13 @@ public class DatabaseTests {
 		//get a real course - 10462,FIN,310.801,Real Estate Finance,3,LEC,T,06:30PM- 09:15PM,225,WBC 225,Gregory T,25,8
 		Course c = db.getCourseFromCRN(10462);
 		
-		assertEquals(Subject.FIN,c.getSubject() );
+		assertEquals(Subject.FIN,c.getSubject());
 		assertEquals("310.801",c.getCourseNum());
 		assertEquals(true,"Real Estate Finance".equals(c.getTitle()));
-		String days = c.getDays();
-		assertEquals(false, days.contains("Mon"));
-		assertEquals(true, days.contains("Tues"));
+		char[] days = c.getDays();
+		assertEquals(days[0],'\0');
+		assertEquals(days[1], 'T');
+		assertEquals(days[4], '\0');
 		assertEquals(true,"Gregory, T".equals(c.getInstructor().getName()));
 	
 		//get a course not found in DB
@@ -77,31 +75,56 @@ public class DatabaseTests {
 		
 	}
 	@Test
-	public void updateStudentI(){
-		Student s = null;
-		IDatabase db = DatabaseProvider.getInstance();
-		s = db.fetchStudent("John", "Smith", null);
-		System.out.println("Size before additional class " + s.getSelectedSchedule().getCourseList().size());
-		
-		//10045,BIO,150.103,Intro Molecular Bio,4,LEC,M W F,11:00AM- 11:50AM,128,LS 128,Boehmler W,25,13
-		Course nuC = db.getCourseFromCRN(10045);
-		s.getSelectedSchedule().addCourse(nuC);
-		db.updateStudent(s);
-		s = db.fetchStudent("John", "Smith", null);
-		System.out.println("Size after additional class " + s.getSelectedSchedule().getCourseList().size());
-	}
-	@Test
 	public void testFetchTeacher(){
 		IDatabase db = DatabaseProvider.getInstance();
-		Teacher t = null;
-		t = db.fetchTeacher("Hake");
-		assertEquals("Hake, D",t.getName());
-		System.out.println(t.getName());
-		System.out.println("No. of classes Hake has: "+ t.getClassList().size());
-		t = db.fetchTeacher("hake");
-		assertEquals(false, t == null);
-		t = db.fetchTeacher("xxxx");
-		assertEquals(null, t);
+		//get a real course - 10462,FIN,310.801,Real Estate Finance,3,LEC,T,06:30PM- 09:15PM,225,WBC 225,Gregory T,25,8
+		Student s = db.fetchStudent("GREGORY", "OLIFF", "goliff@ycp.edu");
+	}
+	@Test
+	public void testFetchStudent(){
+		IDatabase db = DatabaseProvider.getInstance();
+		//get a real course - 10462,FIN,310.801,Real Estate Finance,3,LEC,T,06:30PM- 09:15PM,225,WBC 225,Gregory T,25,8
+		Course c = db.getCourseFromCRN(10462);
 		
+		assertEquals(Subject.FIN,c.getSubject());
+		assertEquals("310.801",c.getCourseNum());
+		assertEquals(true,"Real Estate Finance".equals(c.getTitle()));
+		char[] days = c.getDays();
+		assertEquals(days[0],'\0');
+		assertEquals(days[1], 'T');
+		assertEquals(days[4], '\0');
+		assertEquals(true,"Gregory, T".equals(c.getInstructor().getName()));
+	
+		//get a course not found in DB
+		Course q = db.getCourseFromCRN(21012);
+		assertEquals(q,null);
+	}
+	@Test
+	public void testUpdateCourse(){
+		//test to update course
+	}
+	@Test
+	public void testUpdateStudent(){
+		IDatabase db = DatabaseProvider.getInstance();
+		Student s = new Student();
+		Schedule schedule = new Schedule();
+		s.setEmail("ljames@ycp.edu");
+		s.setName("Lebron James");
+		schedule.addCourse(db.getCourseFromCRN(10011));
+		schedule.addCourse(db.getCourseFromCRN(10400));
+		s.setSelectedSchedule(schedule);
+		db.updateStudent(s);
+		Student retrieve = db.fetchStudent("Lebron", "James", "ljames@ycp.edu");
+		assertEquals(schedule.getCourseList(), retrieve.getSelectedSchedule().getCourseList());
+		assertEquals(retrieve.getName(), "Lebron James");
+		assertEquals(retrieve.getEmail(), "ljames@ycp.edu");
 	}
 }
+
+
+
+
+
+
+
+

@@ -48,19 +48,18 @@ public class IndexServlet extends HttpServlet {
 		 System.out.println(session.getId());
 		 session.setAttribute("user", persistantStudent);
 		 resp.sendRedirect("./studentHome.html");
-	 }
-	 
-	 //Create a persistent user by fetching a teacher from database with controller
-	 else if(type.equals("teacher")){
+	 }else if(type.equals("teacher")){
 		 TeacherController controller = new TeacherController();
-		 Teacher persistentTeacher = controller.getTeacher();
+		 //Controller should do something to create a teacher object, but for now...
+		 Teacher forNow = new Teacher();
+		 forNow.setName("Joe Teacher");
+		 //Teacher persistantTeacher = controller.getTeacher();
 		 
 		 HttpSession session = req.getSession(true);
 		 System.out.println(session.getId());
-		 session.setAttribute("user", persistentTeacher);
+		 session.setAttribute("user", forNow);
+		// req.getRequestDispatcher("./index.html").forward(req, resp);
 		 resp.sendRedirect("./teacherHome.html");
-	 }else{
-		 req.getRequestDispatcher("./index.html").forward(req, resp);
 	 }
   }
 }
