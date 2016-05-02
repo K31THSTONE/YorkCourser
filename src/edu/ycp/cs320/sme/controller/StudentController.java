@@ -71,6 +71,22 @@ public class StudentController {
 		return s;
 	}
 	
+	public Student removeCourseFromSelectedSchedule(Student s, int CRN){
+		Student returningStudent = new Student();
+		Schedule fluidSchedule = new Schedule();
+		int removingCourse = 0;
+		fluidSchedule.setCourseList(s.getSelectedSchedule().getCourseList());
+		for(int i = 0; i < fluidSchedule.getCourseList().size(); i++){
+			if(fluidSchedule.getCourseList().get(i).getCRN() == CRN){
+				removingCourse = i;
+			}
+		}
+		Course c = fluidSchedule.getCourseList().remove(removingCourse);
+		System.out.print("Removed Class: " + c.getTitle());
+		returningStudent.setSelectedSchedule(fluidSchedule);
+		return returningStudent;
+	}
+	
 	
 	
 

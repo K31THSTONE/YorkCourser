@@ -27,7 +27,4 @@ public class TeacherController {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
 }

@@ -45,7 +45,7 @@ public class DBmain implements IDatabase{
 	private interface Transaction<ResultType> {
 		public ResultType execute(Connection conn) throws SQLException;
 	}
-	
+
 	private static final String SQL_insertCourse = 
 			"INSERT INTO courses(CRN, Semester,Subject,Title,courseObject) VALUES (?,?,?,?,?)";
 
