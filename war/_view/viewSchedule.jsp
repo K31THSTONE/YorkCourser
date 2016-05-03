@@ -153,7 +153,9 @@ Pass list of course
 				<c:if test="${! empty courseList}">
  						<c:forEach items="${courseList}" var="current">
 						<div class="course"> 
-					<c:out><button type="button">Remove Course</button></c:out> 	
+						<form action="./studentView" method="post">
+  						   	CRN: <input type="hidden" name="classToRemove" value="${current.CRN}"><br>
+						</form> 	
 						</div>
 							</c:forEach>
 				</c:if>

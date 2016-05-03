@@ -43,7 +43,10 @@ public class SscheduleView extends HttpServlet {
       throws ServletException, IOException {
 	  
 	  Student student = (Student) req.getSession().getAttribute("user");
+	  int CRN = (int)req.getSession().getAttribute("classToRemove"); 
 	  StudentController controller = new StudentController();
+	  controller.removeCourseFromSelectedSchedule(student, CRN);
+	  
 	  
 	  student = controller.changeSelectedSchedule(student, req.getParameter("schedule"));
 	  req.getSession().setAttribute("user", student);

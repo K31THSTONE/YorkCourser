@@ -21,6 +21,7 @@ public class DatabaseTests {
 	@BeforeClass
 	public static void buildup() throws IOException{
 		DBmain db = new DBmain();
+		db.main(null);
 		DatabaseProvider.setInstance(db);
 	}
 	
@@ -84,19 +85,14 @@ public class DatabaseTests {
 	@Test
 	public void testFetchStudent(){
 		IDatabase db = DatabaseProvider.getInstance();
-		//get a real course - 10462,FIN,310.801,Real Estate Finance,3,LEC,T,06:30PM- 09:15PM,225,WBC 225,Gregory T,25,8
-		Course c = db.getCourseFromCRN(10462);
-		
-		assertEquals(Subject.FIN,c.getSubject());
-		assertEquals("310.801",c.getCourseNum());
-		assertEquals(true,"Real Estate Finance".equals(c.getTitle()));
-		String days = c.getDays();
-		assertEquals(true, days.charAt(0) == 'T');
-		assertEquals(true,"Gregory, T".equals(c.getInstructor().getName()));
-	
-		//get a course not found in DB
-		Course q = db.getCourseFromCRN(21012);
-		assertEquals(q,null);
+		Student s = new Student();
+		s.setName("Lebron James");
+		s.setEmail("ljames@ycp.edu");
+		db.updateStudent(s);
+		Student retrieve = new Student();
+		retrieve = db.fetchStudent("Lebron", "James", "ljames@ycp.edu");
+		assertEquals(true, retrieve.getName().equals("Lebron James"));
+		assertEquals(true, retrieve.getEmail().equals("ljames@ycp.edu"));
 	}
 	@Test
 	public void testUpdateCourse(){

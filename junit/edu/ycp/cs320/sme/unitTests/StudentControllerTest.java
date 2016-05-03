@@ -15,7 +15,7 @@ import edu.ycp.cs320.sme.model.Course.Subject;
 public class StudentControllerTest {
 	
 	@Test
-	public void buildStudentTest(){
+	public void getGenericStudentTest(){
 		Student student;
 		StudentController controller = new StudentController();
 		student = controller.getGenericStudent();
