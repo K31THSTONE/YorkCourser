@@ -2,7 +2,6 @@
 Get scheudule 
 See how to handle objects
 Pass list of course
-
 --%>
 
 <!DOCTYPE html>
@@ -63,6 +62,7 @@ Pass list of course
 					<th class="label">Location</th>
 					<th class="label">Days</th>
 					<th class="label">Instructor</th>
+					<th class="label">Remove Course</th>
 				</c:when>
 			<c:otherwise>
 				<h2>ADD COURSES TO BEGIN</h2></c:otherwise>
@@ -149,6 +149,14 @@ Pass list of course
 							</c:forEach>
 				</c:if>
 			</td>
-
+			<td>
+				<c:if test="${! empty courseList}">
+ 						<c:forEach items="${courseList}" var="current">
+						<div class="course"> 
+					<c:out><button type="button">Remove Course</button></c:out> 	
+						</div>
+							</c:forEach>
+				</c:if>
+			<td>
 	</table>
 	</body>
